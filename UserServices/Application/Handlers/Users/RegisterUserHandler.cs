@@ -22,36 +22,28 @@ namespace UserService.Application.Handlers.Users
 
         public async Task<ResponseDTO<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            try
+            if (!await _userService.ValidateUserFormatEmailAsync(request.Email))
             {
-                if (!await _userService.ValidateUserFormatEmailAsync(request.Email))
-                {
-                    return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
-                }
-
-                var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
-                if (emailExists)
-                {
-                    return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
-                }
-
-                User user = new()
-                {
-                    Name = request.Name,
-                    Email = request.Email,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                    RoleId = request.Role
-                };
-
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
-                return new ResponseDTO<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
+                return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
             }
-            catch (Exception e)
+
+            var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+            if (emailExists)
             {
-                Console.WriteLine(e.Message);
-                return new ResponseDTO<string>(false, "Error al registrar usuario", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
             }
+
+            User user = new()
+            {
+                Name = request.Name,
+                Email = request.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                RoleId = request.Role
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return new ResponseDTO<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
         }
     }
 }

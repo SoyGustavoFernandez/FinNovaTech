@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using UserService.API.Middleware;
 using UserService.Application.Handlers.Users;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
@@ -40,6 +41,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 
