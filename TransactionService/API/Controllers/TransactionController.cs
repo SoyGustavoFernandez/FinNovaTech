@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TransactionService.Application.Interfaces;
-using TransactionService.Application.Services;
-using TransactionService.Domain.Entities;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using TransactionService.Application.Command;
+using TransactionService.Application.Queries;
 
 namespace TransactionService.API.Controllers
 {
@@ -9,11 +9,11 @@ namespace TransactionService.API.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionServices _transactionServices;
+        private readonly IMediator _mediator;
 
-        public TransactionController(ITransactionServices transactionServices)
+        public TransactionController(IMediator mediator)
         {
-            _transactionServices = transactionServices;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace TransactionService.API.Controllers
         [HttpGet("balance/{accountId}")]
         public async Task<IActionResult> GetBalance(int accountId)
         {
-            var balance = await _transactionServices.GetAccountBalanceAsync(accountId);
-            return Ok(new { AccountId = accountId, Balance = balance });
+            var balance = await _mediator.Send(new GetBalanceQuery(accountId));
+            return Ok(balance);
         }
 
         /// <summary>
@@ -34,10 +34,10 @@ namespace TransactionService.API.Controllers
         /// <param name="request">Datos de la transacción.</param>
         /// <returns>Estado de la operación.</returns>
         [HttpPost("deposit")]
-        public async Task<IActionResult> Deposit([FromBody] TransactionRequest request)
+        public async Task<IActionResult> Deposit([FromBody] DepositCommand command)
         {
-            await _transactionServices.SaveTransactionAsync(request.AccountId, request.Amount, "Deposit");
-            return Ok("Depósito realizado");
+            var result = await _mediator.Send(command);
+            return result ? Ok("Depósito realizado") : BadRequest("Error al procesar el depósito");
         }
 
         /// <summary>
@@ -46,10 +46,10 @@ namespace TransactionService.API.Controllers
         /// <param name="request">Datos de la transacción.</param>
         /// <returns>Estado de la operación.</returns>
         [HttpPost("withdraw")]
-        public async Task<IActionResult> Withdraw([FromBody] TransactionRequest request)
+        public async Task<IActionResult> Withdraw([FromBody] WithdrawCommand command)
         {
-            await _transactionServices.SaveTransactionAsync(request.AccountId, request.Amount, "Withdraw");
-            return Ok("Retiro realizado");
+            var result = await _mediator.Send(command);
+            return result ? Ok("Retiro realizado") : BadRequest("Error al procesar el retiro");
         }
     }
 }

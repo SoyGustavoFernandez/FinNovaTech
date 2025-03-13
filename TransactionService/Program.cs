@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using TransactionService.Application.Handlers;
 using TransactionService.Application.Interfaces;
 using TransactionService.Application.Services;
 using TransactionService.Infrastructure.Data;
@@ -13,6 +14,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DepositHandler).Assembly));
 
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionEventStore, TransactionEventStore>();
