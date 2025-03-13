@@ -5,7 +5,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Handlers.Users
+namespace UserService.Application.Commands.Users.Handlers
 {
     /// <summary>
     /// Handler para actualizar la contraseña de un usuario.
@@ -28,7 +28,7 @@ namespace UserService.Application.Handlers.Users
             {
                 return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
-            if(string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Password))
             {
                 return new ResponseDTO<string>(false, "La contraseña no puede estar vacía", null, (int)HttpStatusCode.BadRequest);
             }

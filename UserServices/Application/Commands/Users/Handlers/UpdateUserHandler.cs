@@ -6,7 +6,7 @@ using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Repositories;
 
-namespace UserService.Application.Handlers.Users
+namespace UserService.Application.Commands.Users.Handlers
 {
     /// <summary>
     /// Handler para actualizar un usuario.
@@ -50,7 +50,7 @@ namespace UserService.Application.Handlers.Users
             {
                 UserId = user.Id,
                 Action = "Perfil actualizado"
-            }); 
+            });
             return new ResponseDTO<string>(true, "Usuario actualizado", null, (int)HttpStatusCode.OK);
         }
     }

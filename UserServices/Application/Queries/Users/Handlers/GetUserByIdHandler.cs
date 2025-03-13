@@ -4,14 +4,14 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Application.Queries.Users;
 
-namespace UserService.Application.Handlers.Users
+namespace UserService.Application.Queries.Users.Handlers
 {
     /// <summary>
     /// Handler para obtener un usuario por su identificador.
     /// </summary>
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ResponseDTO<UserDTO>>
     {
-        private readonly IUserRepository _repository; 
+        private readonly IUserRepository _repository;
 
         public GetUserByIdHandler(IUserRepository repository)
         {

@@ -5,7 +5,7 @@ using TransactionService.Application.Interfaces;
 using TransactionService.Application.Queries;
 using TransactionService.Domain.Enums;
 
-namespace TransactionService.Application.Handlers
+namespace TransactionService.Application.Queries.Handlers
 {
     public class GetBalanceHandler : IRequestHandler<GetBalanceQuery, ResponseDTO<decimal>>
     {

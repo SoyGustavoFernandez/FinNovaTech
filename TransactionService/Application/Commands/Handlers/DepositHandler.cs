@@ -6,7 +6,7 @@ using TransactionService.Application.Interfaces;
 using TransactionService.Domain.Entities;
 using TransactionService.Domain.Enums;
 
-namespace TransactionService.Application.Handlers
+namespace TransactionService.Application.Commands.Handlers
 {
     public class DepositHandler : IRequestHandler<DepositCommand, ResponseDTO<string>>
     {
@@ -19,7 +19,7 @@ namespace TransactionService.Application.Handlers
 
         public async Task<ResponseDTO<string>> Handle(DepositCommand request, CancellationToken cancellationToken)
         {
-            if(request.Amount <= 0)
+            if (request.Amount <= 0)
             {
                 return new ResponseDTO<string>(false, "El monto debe ser mayor a cero", null, (int)HttpStatusCode.BadRequest);
             }

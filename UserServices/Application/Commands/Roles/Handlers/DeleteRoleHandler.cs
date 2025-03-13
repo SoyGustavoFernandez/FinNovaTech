@@ -4,30 +4,29 @@ using UserService.Application.Commands.Roles;
 using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 
-namespace UserService.Application.Handlers.Roles
+namespace UserService.Application.Commands.Roles.Handlers
 {
     /// <summary>
-    /// Handler para actualizar un rol.
+    /// Handler para eliminar un rol.
     /// </summary>
-    public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, ResponseDTO<string>>
+    public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand, ResponseDTO<string>>
     {
         private readonly IRoleRepository _repository;
 
-        public UpdateRoleHandler(IRoleRepository repository)
+        public DeleteRoleHandler(IRoleRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
             var role = await _repository.GetRoleByIdAsync(request.Id);
             if (role == null)
             {
                 return new ResponseDTO<string>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
             }
-            role.Name = request.Name;
-            await _repository.UpdateRole(role);
-            return new ResponseDTO<string>(true, "Rol actualizado correctamente", null, (int)HttpStatusCode.OK);
+            await _repository.DeleteRoleAsync(role);
+            return new ResponseDTO<string>(true, "Rol eliminado correctamente", null, (int)HttpStatusCode.OK);
         }
     }
 }

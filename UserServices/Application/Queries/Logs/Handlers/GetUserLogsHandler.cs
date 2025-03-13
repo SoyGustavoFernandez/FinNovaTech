@@ -4,7 +4,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Application.Queries.Logs;
 
-namespace UserService.Application.Handlers.Logs
+namespace UserService.Application.Queries.Logs.Handlers
 {
     public class GetUserLogsHandler : IRequestHandler<GetLogByUserIdQuery, ResponseDTO<List<UserLogsDTO>>>
     {

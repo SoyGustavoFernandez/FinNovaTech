@@ -5,7 +5,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Handlers.Users
+namespace UserService.Application.Commands.Users.Handlers
 {
     /// <summary>
     /// Handler para registrar un usuario.

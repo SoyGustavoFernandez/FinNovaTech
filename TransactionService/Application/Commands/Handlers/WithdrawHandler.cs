@@ -5,7 +5,7 @@ using TransactionService.Application.DTOs;
 using TransactionService.Application.Interfaces;
 using TransactionService.Domain.Enums;
 
-namespace TransactionService.Application.Handlers
+namespace TransactionService.Application.Commands.Handlers
 {
     public class WithdrawHandler : IRequestHandler<WithdrawCommand, ResponseDTO<string>>
     {

@@ -4,7 +4,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Application.Queries.Users;
 
-namespace UserService.Application.Handlers.Users
+namespace UserService.Application.Queries.Users.Handlers
 {
     /// <summary>
     /// Handler para obtener todos los usuarios.

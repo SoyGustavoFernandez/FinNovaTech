@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UserService.API.Middleware;
-using UserService.Application.Handlers.Users;
+using UserService.Application.Commands.Users.Handlers;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
 using UserService.Infrastructure.Repositories;

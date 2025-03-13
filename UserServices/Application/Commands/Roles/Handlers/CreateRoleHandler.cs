@@ -5,7 +5,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using rolEntity = UserService.Domain.Entities;
 
-namespace UserService.Application.Handlers.Roles
+namespace UserService.Application.Commands.Roles.Handlers
 {
     /// <summary>
     /// Handler para registrar un rol.

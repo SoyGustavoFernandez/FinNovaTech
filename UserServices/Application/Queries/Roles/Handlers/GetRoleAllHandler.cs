@@ -4,7 +4,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Application.Queries.Roles;
 
-namespace UserService.Application.Handlers.Roles
+namespace UserService.Application.Queries.Roles.Handlers
 {
     /// <summary>
     /// Handler para obtener todos los roles.
