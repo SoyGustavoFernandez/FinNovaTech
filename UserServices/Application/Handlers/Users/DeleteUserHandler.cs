@@ -2,7 +2,7 @@
 using System.Net;
 using UserService.Application.Commands.Users;
 using UserService.Application.DTOs;
-using UserService.Infrastructure.Data;
+using UserService.Application.Interfaces;
 
 namespace UserService.Application.Handlers.Users
 {
@@ -11,22 +11,21 @@ namespace UserService.Application.Handlers.Users
     /// </summary>
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, ResponseDTO<string>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserRepository _repository;
 
-        public DeleteUserHandler(ApplicationDbContext context)
+        public DeleteUserHandler(IUserRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResponseDTO<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.Id);
+            var user = await _repository.GetUserByIdAsync(request.Id);
             if (user == null)
             {
                 return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteUserAsync(user);
             return new ResponseDTO<string>(true, "Usuario eliminado correctamente", null, (int)HttpStatusCode.OK);
         }
     }

@@ -4,6 +4,7 @@ using UserService.API.Middleware;
 using UserService.Application.Handlers.Users;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
+using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly));
 
 builder.Services.AddScoped<IUserValidation, UserValidationService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using System.Net;
 using UserService.Application.DTOs;
+using UserService.Application.Interfaces;
 using UserService.Application.Queries.Roles;
-using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Roles
 {
@@ -11,16 +11,16 @@ namespace UserService.Application.Handlers.Roles
     /// </summary>
     public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, ResponseDTO<RoleDTO>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRoleRepository _repository;
 
-        public GetRoleByIdHandler(ApplicationDbContext context)
+        public GetRoleByIdHandler(IRoleRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResponseDTO<RoleDTO>> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
         {
-            var role = await _context.Roles.FindAsync(request.Id);
+            var role = await _repository.GetRoleByIdAsync(request.Id);
             if (role == null)
             {
                 return new ResponseDTO<RoleDTO>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);

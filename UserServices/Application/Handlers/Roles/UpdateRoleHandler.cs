@@ -2,7 +2,7 @@
 using System.Net;
 using UserService.Application.Commands.Roles;
 using UserService.Application.DTOs;
-using UserService.Infrastructure.Data;
+using UserService.Application.Interfaces;
 
 namespace UserService.Application.Handlers.Roles
 {
@@ -11,23 +11,22 @@ namespace UserService.Application.Handlers.Roles
     /// </summary>
     public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, ResponseDTO<string>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRoleRepository _repository;
 
-        public UpdateRoleHandler(ApplicationDbContext context)
+        public UpdateRoleHandler(IRoleRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResponseDTO<string>> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = await _context.Roles.FindAsync(request.Id);
+            var role = await _repository.GetRoleByIdAsync(request.Id);
             if (role == null)
             {
                 return new ResponseDTO<string>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             role.Name = request.Name;
-            _context.Roles.Update(role);
-            await _context.SaveChangesAsync();
+            await _repository.UpdateRole(role);
             return new ResponseDTO<string>(true, "Rol actualizado correctamente", null, (int)HttpStatusCode.OK);
         }
     }

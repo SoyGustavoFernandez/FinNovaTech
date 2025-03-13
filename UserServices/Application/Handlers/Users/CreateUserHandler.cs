@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using UserService.Application.Commands.Users;
 using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
-using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
@@ -14,12 +12,12 @@ namespace UserService.Application.Handlers.Users
     /// </summary>
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResponseDTO<string>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserRepository _repository;
         private readonly IUserValidation _userService;
 
-        public CreateUserHandler(ApplicationDbContext context, IUserValidation userService)
+        public CreateUserHandler(IUserRepository repository, IUserValidation userService)
         {
-            _context = context;
+            _repository = repository;
             _userService = userService;
         }
 
@@ -30,7 +28,7 @@ namespace UserService.Application.Handlers.Users
                 return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
             }
 
-            var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+            var emailExists = await _repository.EmailExistsAsync(request.Email);
             if (emailExists)
             {
                 return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
@@ -44,8 +42,7 @@ namespace UserService.Application.Handlers.Users
                 RoleId = request.Role
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _repository.AddUserAsync(user);
             return new ResponseDTO<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
         }
     }

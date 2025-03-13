@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using UserService.Application.DTOs;
+using UserService.Application.Interfaces;
 using UserService.Application.Queries.Roles;
-using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Roles
 {
@@ -12,16 +11,16 @@ namespace UserService.Application.Handlers.Roles
     /// </summary>
     public class GetRoleAllHandler : IRequestHandler<GetAllRolesQuery, ResponseDTO<List<RoleDTO>>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRoleRepository _repository;
 
-        public GetRoleAllHandler(ApplicationDbContext context)
+        public GetRoleAllHandler(IRoleRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResponseDTO<List<RoleDTO>>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
         {
-            var roles = await _context.Roles.Select(r => new RoleDTO { Name = r.Name }).ToListAsync();
+            var roles = await _repository.GetRolesAsync();
             return new ResponseDTO<List<RoleDTO>>(true, "Roles encontrados", roles, (int)HttpStatusCode.OK);
         }
     }

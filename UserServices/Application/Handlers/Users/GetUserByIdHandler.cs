@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using System.Net;
 using UserService.Application.DTOs;
+using UserService.Application.Interfaces;
 using UserService.Application.Queries.Users;
-using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
@@ -11,16 +11,16 @@ namespace UserService.Application.Handlers.Users
     /// </summary>
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ResponseDTO<UserDTO>>
     {
-        private readonly ApplicationDbContext _context; 
+        private readonly IUserRepository _repository; 
 
-        public GetUserByIdHandler(ApplicationDbContext context)
+        public GetUserByIdHandler(IUserRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResponseDTO<UserDTO>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.Id);
+            var user = await _repository.GetUserByIdAsync(request.Id);
 
             if (user == null)
             {
