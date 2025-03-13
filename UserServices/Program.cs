@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using UserService.Application.Handlers.Users;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
@@ -17,9 +18,36 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Regis
 
 builder.Services.AddScoped<IUserValidation, UserValidationService>();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new()
+    {
+        Title = "FinNovaTech API",
+        Version = "v1",
+        Description = "API para gestionar usuarios y autenticación en FinNovaTech.",
+        Contact = new OpenApiContact
+        {
+            Name = "Gustavo Fernández",
+            Email = "soygustavofernandez@gmail.com",
+            Url = new Uri("https://github.com/soygustavofernandez")
+        },
+    });
+
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserService v1"));
+}
 
 app.UseHttpsRedirection();
 

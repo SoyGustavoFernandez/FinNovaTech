@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Commands.Users;
 using UserService.Application.Queries.Users;
@@ -16,6 +17,10 @@ namespace UserService.API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Lista todos los usuarios registrados en la aplicación.
+        /// </summary>
+        /// <returns>Devuelve una lista de usuarios</returns>
         [HttpGet()]
         public async Task<IActionResult> GetAllUser()
         {
@@ -23,6 +28,11 @@ namespace UserService.API.Controllers
             return Ok(users);
         }
 
+        /// <summary>
+        /// Lista un usuario por su Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Devuelve un usuario</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -35,14 +45,29 @@ namespace UserService.API.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Registra un nuevo usuario en la aplicación.
+        /// </summary>
+        /// <param name="command">Datos del usuario a registrar</param>
+        /// <returns>Devuelve 201 si el usuario se creó correctamente</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
+        /// <summary>
+        /// Actualiza los datos de un usuario.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>Devuelve 200 si el usuario se actualizó correctamente</returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand command)
         {
             if (id != command.Id)
@@ -54,14 +79,30 @@ namespace UserService.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Elimina un usuario por su Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Devuelve 200 si el usuario se eliminó correctamente</returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var result = await _mediator.Send(new DeleteUserCommand(id));
             return Ok(result);
         }
 
+        /// <summary>
+        /// Actualiza la contraseña de un usuario.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>Devuelve 200 si la contraseña se actualizó correctamente</returns>
         [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdatePassword(int id, [FromBody] UpdateUserPasswordCommand command)
         {
             if (id != command.Id)
