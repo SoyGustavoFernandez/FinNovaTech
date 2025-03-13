@@ -31,7 +31,7 @@ namespace TransactionService.API.Controllers
         /// <summary>
         /// Realiza un deposito en una cuenta
         /// </summary>
-        /// <param name="request">Datos de la transacción.</param>
+        /// <param name="command">Datos de la transacción.</param>
         /// <returns>Estado de la operación.</returns>
         [HttpPost("deposit")]
         public async Task<IActionResult> Deposit([FromBody] DepositCommand command)
@@ -43,7 +43,7 @@ namespace TransactionService.API.Controllers
         /// <summary>
         /// Realiza un retiro en una cuenta
         /// </summary>
-        /// <param name="request">Datos de la transacción.</param>
+        /// <param name="command">Datos de la transacción.</param>
         /// <returns>Estado de la operación.</returns>
         [HttpPost("withdraw")]
         public async Task<IActionResult> Withdraw([FromBody] WithdrawCommand command)
