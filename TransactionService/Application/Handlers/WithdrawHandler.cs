@@ -23,6 +23,10 @@ namespace TransactionService.Application.Handlers
             {
                 return new ResponseDTO<string>(false, "No se encontraron eventos para la cuenta", null, (int)HttpStatusCode.NotFound);
             }
+            if (request.Amount <= 0)
+            {
+                return new ResponseDTO<string>(false, "El monto debe ser mayor a cero", null, (int)HttpStatusCode.BadRequest);
+            }
             var transaction = new Domain.Entities.TransactionEventEntity
             {
                 AccountId = request.AccountId,

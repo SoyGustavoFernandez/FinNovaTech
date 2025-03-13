@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using TransactionService.API.Middleware;
 using TransactionService.Application.Handlers;
 using TransactionService.Application.Interfaces;
-using TransactionService.Application.Services;
 using TransactionService.Infrastructure.Data;
 using TransactionService.Infrastructure.Repositories;
 
@@ -19,7 +19,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Depos
 
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionEventStore, TransactionEventStore>();
-builder.Services.AddScoped<ITransactionServices, TransactionServices>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -43,6 +42,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
