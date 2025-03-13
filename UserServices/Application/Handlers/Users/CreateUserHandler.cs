@@ -14,11 +14,13 @@ namespace UserService.Application.Handlers.Users
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidation _userService;
+        private readonly IUserLogRepository _userLogRepository;
 
-        public CreateUserHandler(IUserRepository repository, IUserValidation userService)
+        public CreateUserHandler(IUserRepository repository, IUserValidation userService, IUserLogRepository userRepository)
         {
             _repository = repository;
             _userService = userService;
+            _userLogRepository = userRepository;
         }
 
         public async Task<ResponseDTO<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -43,6 +45,12 @@ namespace UserService.Application.Handlers.Users
             };
 
             await _repository.AddUserAsync(user);
+
+            await _userLogRepository.AddLogAsync(new UserLogs
+            {
+                UserId = user.Id,
+                Action = "Usuario registrado",
+            });
             return new ResponseDTO<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
         }
     }

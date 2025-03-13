@@ -14,6 +14,6 @@
 
         public UserDetails UserDetails { get; set; }
 
-        public UserLogs UserLogs { get; set; }
+        public ICollection<UserLogs> UserLogs { get; set; }
     }
 }

@@ -3,6 +3,8 @@ using System.Net;
 using UserService.Application.Commands.Users;
 using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
+using UserService.Domain.Entities;
+using UserService.Infrastructure.Repositories;
 
 namespace UserService.Application.Handlers.Users
 {
@@ -13,11 +15,13 @@ namespace UserService.Application.Handlers.Users
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidation _userValidation;
+        private readonly IUserLogRepository _userLogRepository;
 
-        public UpdateUserHandler(IUserRepository repository, IUserValidation userValidation)
+        public UpdateUserHandler(IUserRepository repository, IUserValidation userValidation, IUserLogRepository userLogRepository)
         {
             _repository = repository;
             _userValidation = userValidation;
+            _userLogRepository = userLogRepository;
         }
 
         public async Task<ResponseDTO<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -40,8 +44,13 @@ namespace UserService.Application.Handlers.Users
             user.Name = request.Name;
             user.Email = request.Email;
             user.RoleId = request.Role;
-
             await _repository.UpdateUser(user);
+
+            await _userLogRepository.AddLogAsync(new UserLogs
+            {
+                UserId = user.Id,
+                Action = "Perfil actualizado"
+            }); 
             return new ResponseDTO<string>(true, "Usuario actualizado", null, (int)HttpStatusCode.OK);
         }
     }

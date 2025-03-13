@@ -28,8 +28,8 @@ namespace UserService.Infrastructure.Data
             //Relación con UserDetails
             modelBuilder.Entity<User>().HasOne(x => x.UserDetails).WithOne(x => x.User).HasForeignKey<UserDetails>(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             //Relación con UserLogs
-            modelBuilder.Entity<User>().HasOne(x => x.UserLogs).WithOne(x => x.User).HasForeignKey<UserLogs>(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
-
+            modelBuilder.Entity<User>().HasMany(x => x.UserLogs).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            
             modelBuilder.Entity<Roles>().HasKey(pk => pk.Id);
             modelBuilder.Entity<Roles>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Roles>().Property(x => x.Name).IsRequired();
