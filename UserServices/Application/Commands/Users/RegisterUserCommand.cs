@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using System.Net;
+using UserService.Application.DTOs;
 
 namespace UserService.Application.Commands.Users
 {
     /// <summary>
     /// Comando para registrar un usuario.
     /// </summary>
-    public class RegisterUserCommand : IRequest<HttpStatusCode>
+    public class RegisterUserCommand : IRequest<ResponseDTO<string>>
     {
         /// <summary>
         /// Nombre del usuario.

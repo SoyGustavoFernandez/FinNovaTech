@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Commands.Users;
 using UserService.Application.Queries.Users;
@@ -24,8 +23,12 @@ namespace UserService.API.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetAllUser()
         {
-            var users = await _mediator.Send(new GetAllUsersQuery());
-            return Ok(users);
+            var result = await _mediator.Send(new GetAllUsersQuery());
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
         }
 
         /// <summary>
@@ -36,13 +39,12 @@ namespace UserService.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
-            var user = await _mediator.Send(new GetUserQueryById(id));
-
-            if (user == null)
+            var result = await _mediator.Send(new GetUserQueryById(id));
+            if (!result.Success)
             {
-                return NotFound();
+                return NotFound(result);
             }
-            return Ok(user);
+            return Ok(result);
         }
 
         /// <summary>
@@ -56,7 +58,11 @@ namespace UserService.API.Controllers
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Created("", result);
         }
 
         /// <summary>
@@ -67,6 +73,7 @@ namespace UserService.API.Controllers
         /// <returns>Devuelve 200 si el usuario se actualizó correctamente</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand command)
         {
@@ -76,6 +83,10 @@ namespace UserService.API.Controllers
             }
 
             var result = await _mediator.Send(command);
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
             return Ok(result);
         }
 
@@ -90,6 +101,10 @@ namespace UserService.API.Controllers
         public async Task<IActionResult> DeleteUser(int id)
         {
             var result = await _mediator.Send(new DeleteUserCommand(id));
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
             return Ok(result);
         }
 
@@ -111,6 +126,10 @@ namespace UserService.API.Controllers
             }
 
             var result = await _mediator.Send(command);
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
             return Ok(result);
         }
     }

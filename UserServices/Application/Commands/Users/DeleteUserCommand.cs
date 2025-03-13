@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using System.Net;
+using UserService.Application.DTOs;
 
 namespace UserService.Application.Commands.Users
 {
-    public class DeleteUserCommand : IRequest<HttpStatusCode>
+    public class DeleteUserCommand : IRequest<ResponseDTO<string>>
     {
         public int Id { get; set; }
 

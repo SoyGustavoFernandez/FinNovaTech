@@ -3,7 +3,7 @@ using UserService.Application.DTOs;
 
 namespace UserService.Application.Queries.Users
 {
-    public class GetUserQueryById : IRequest<UserDTO>
+    public class GetUserQueryById : IRequest<ResponseDTO<UserDTO>>
     {
         public int Id { get; set; }
 

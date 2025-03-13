@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using System.Net;
 using UserService.Application.Commands.Users;
+using UserService.Application.DTOs;
 using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
-    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, HttpStatusCode>
+    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -14,16 +15,16 @@ namespace UserService.Application.Handlers.Users
             _context = context;
         }
 
-        public async Task<HttpStatusCode> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(request.Id);
             if (user == null)
             {
-                return HttpStatusCode.NotFound;
+                return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return HttpStatusCode.OK;
+            return new ResponseDTO<string>(true, "Usuario eliminado correctamente", null, (int)HttpStatusCode.OK);
         }
     }
 }

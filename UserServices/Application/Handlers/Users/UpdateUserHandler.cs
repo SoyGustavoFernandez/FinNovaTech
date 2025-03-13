@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using UserService.Application.Commands.Users;
+using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
-    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, HttpStatusCode>
+    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserValidation _userValidation;
@@ -17,17 +19,22 @@ namespace UserService.Application.Handlers.Users
             _userValidation = userValidation;
         }
 
-        public async Task<HttpStatusCode> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(request.Id);
             if (user == null)
             {
-                return HttpStatusCode.NotFound;
+                return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
-            bool validEmail = await _userValidation.ValidateUserEmailAsync(request.Email);
+            bool validEmail = await _userValidation.ValidateUserFormatEmailAsync(request.Email);
             if (!validEmail)
             {
-                return HttpStatusCode.BadRequest;
+                return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
+            }
+            var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+            if (emailExists)
+            {
+                return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
             }
             user.Name = request.Name;
             user.Email = request.Email;
@@ -35,7 +42,7 @@ namespace UserService.Application.Handlers.Users
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-            return HttpStatusCode.OK;
+            return new ResponseDTO<string>(true, "Usuario actualizado", null, (int)HttpStatusCode.OK);
         }
     }
 }

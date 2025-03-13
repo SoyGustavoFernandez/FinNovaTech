@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using System.Net;
 using UserService.Application.DTOs;
 using UserService.Application.Queries.Users;
 using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
-    public class GetUserHandler : IRequestHandler<GetUserQueryById, UserDTO>
+    public class GetUserHandler : IRequestHandler<GetUserQueryById, ResponseDTO<UserDTO>>
     {
         private readonly ApplicationDbContext _context; 
 
@@ -14,16 +15,18 @@ namespace UserService.Application.Handlers.Users
             _context = context;
         }
 
-        public async Task<UserDTO> Handle(GetUserQueryById request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<UserDTO>> Handle(GetUserQueryById request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(request.Id);
 
             if (user == null)
             {
-                return null;
+                return new ResponseDTO<UserDTO>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
 
-            return new UserDTO { Name = user.Name, Email = user.Email };
+            var userDTO = new UserDTO { Name = user.Name, Email = user.Email };
+
+            return new ResponseDTO<UserDTO>(true, "Usuario encontrado", userDTO, (int)HttpStatusCode.OK);
         }
     }
 }

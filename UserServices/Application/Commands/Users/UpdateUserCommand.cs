@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using System.Net;
+using UserService.Application.DTOs;
 
 namespace UserService.Application.Commands.Users
 {
-    public class UpdateUserCommand : IRequest<HttpStatusCode>
+    public class UpdateUserCommand : IRequest<ResponseDTO<string>>
     {
         public int Id { get; set; }
         public string Name { get; set; }

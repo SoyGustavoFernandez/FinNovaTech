@@ -2,6 +2,6 @@
 {
     public interface IUserValidation
     {
-        Task<bool> ValidateUserEmailAsync(string email);
+        Task<bool> ValidateUserFormatEmailAsync(string email);
     }
 }
