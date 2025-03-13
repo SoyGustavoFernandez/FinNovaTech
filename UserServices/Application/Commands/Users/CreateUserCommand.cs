@@ -7,7 +7,7 @@ namespace UserService.Application.Commands.Users
     /// <summary>
     /// Comando para registrar un usuario.
     /// </summary>
-    public class RegisterUserCommand : IRequest<ResponseDTO<string>>
+    public class CreateUserCommand : IRequest<ResponseDTO<string>>
     {
         /// <summary>
         /// Nombre del usuario.
@@ -26,7 +26,14 @@ namespace UserService.Application.Commands.Users
         /// </summary>
         public int Role { get; set; }
 
-        public RegisterUserCommand(string name, string email, string password, int role)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="role"></param>
+        public CreateUserCommand(string name, string email, string password, int role)
         {
             Name = name;
             Email = email;

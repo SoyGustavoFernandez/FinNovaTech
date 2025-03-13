@@ -8,6 +8,9 @@ using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
+    /// <summary>
+    /// Handler para actualizar un usuario.
+    /// </summary>
     public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;

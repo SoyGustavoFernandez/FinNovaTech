@@ -6,6 +6,9 @@ using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
+    /// <summary>
+    /// Handler para actualizar la contraseña de un usuario.
+    /// </summary>
     public class UpdateUserPasswordHandler : IRequestHandler<UpdateUserPasswordCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;

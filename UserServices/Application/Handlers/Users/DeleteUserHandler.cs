@@ -6,6 +6,9 @@ using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
+    /// <summary>
+    /// Handler para eliminar un usuario.
+    /// </summary>
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;

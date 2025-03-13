@@ -9,7 +9,10 @@ using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, ResponseDTO<string>>
+    /// <summary>
+    /// Handler para registrar un usuario.
+    /// </summary>
+    public class RegisterUserHandler : IRequestHandler<CreateUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserValidation _userService;
@@ -20,7 +23,7 @@ namespace UserService.Application.Handlers.Users
             _userService = userService;
         }
 
-        public async Task<ResponseDTO<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             if (!await _userService.ValidateUserFormatEmailAsync(request.Email))
             {

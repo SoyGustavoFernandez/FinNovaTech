@@ -6,6 +6,9 @@ using UserService.Infrastructure.Data;
 
 namespace UserService.Application.Handlers.Users
 {
+    /// <summary>
+    /// Handler para obtener un usuario por su identificador.
+    /// </summary>
     public class GetUserHandler : IRequestHandler<GetUserQueryById, ResponseDTO<UserDTO>>
     {
         private readonly ApplicationDbContext _context; 

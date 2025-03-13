@@ -55,7 +55,7 @@ namespace UserService.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
+        public async Task<IActionResult> RegisterUser([FromBody] CreateUserCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.Success)
