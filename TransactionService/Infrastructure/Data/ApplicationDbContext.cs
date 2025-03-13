@@ -15,6 +15,7 @@ namespace TransactionService.Infrastructure.Data
         {
             modelBuilder.Entity<TransactionEventEntity>().HasKey(e => e.Id);
             modelBuilder.Entity<TransactionEventEntity>().HasIndex(e => e.AccountId);
+            modelBuilder.Entity<TransactionEventEntity>().Property(x => x.Timestamp).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAddOrUpdate();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace TransactionService.Infrastructure.Repositories
 
         public async Task<IEnumerable<TransactionEventEntity>> GetEventsByAccountIdAsync(int accountId)
         {
-            return await _context.TransactionEvents.Where(x => x.AccountId == accountId).OrderBy(x => x.Timestamp).AsNoTracking().ToListAsync();
+            return await _context.TransactionEvents.Where(e => e.AccountId == accountId).OrderBy(e => e.Timestamp).ToListAsync();
         }
     }
 }

@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\DTOs\" />
-    <Folder Include="Domain\Enums\" />
     <Folder Include="Domain\Exceptions\" />
     <Folder Include="Infrastructure\Config\" />
     <Folder Include="Infrastructure\Migrations\" />

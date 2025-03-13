@@ -1,4 +1,5 @@
-﻿using TransactionService.Domain.Entities;
+﻿using TransactionService.Application.DTOs;
+using TransactionService.Domain.Entities;
 
 namespace TransactionService.Application.Interfaces
 {
