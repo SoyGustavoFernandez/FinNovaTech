@@ -3,18 +3,18 @@ using System.Net;
 
 namespace UserService.Application.Commands.Users
 {
-    public class RegisterUserCommand : IRequest<HttpStatusCode>
+    public class UpdateUserCommand : IRequest<HttpStatusCode>
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public int Role { get; set; }
 
-        public RegisterUserCommand(string name, string email, string password, int role)
+        public UpdateUserCommand(int id, string name, string email, int role)
         {
+            Id = id;
             Name = name;
             Email = email;
-            Password = password;
             Role = role;
         }
     }

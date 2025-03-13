@@ -32,7 +32,7 @@ namespace UserService.Application.Handlers.Users
                     Name = request.Name,
                     Email = request.Email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                    RoleId = 1
+                    RoleId = request.Role
                 };
 
                 _context.Users.Add(user);

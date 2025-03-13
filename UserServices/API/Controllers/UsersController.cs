@@ -16,11 +16,11 @@ namespace UserService.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
+        [HttpGet()]
+        public async Task<IActionResult> GetAllUser()
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var users = await _mediator.Send(new GetAllUsersQuery());
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
@@ -35,11 +35,42 @@ namespace UserService.API.Controllers
             return Ok(user);
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> GetUser()
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
         {
-            var users = await _mediator.Send(new GetAllUsersQuery());
-            return Ok(users);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var result = await _mediator.Send(new DeleteUserCommand(id));
+            return Ok(result);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdatePassword(int id, [FromBody] UpdateUserPasswordCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }
