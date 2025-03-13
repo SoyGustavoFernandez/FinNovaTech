@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using TransactionService.Application.DTOs;
 
 namespace TransactionService.Application.Command
 {
-    public class DepositCommand : IRequest<bool>
+    public class DepositCommand : IRequest<ResponseDTO<string>>
     {
         public int AccountId { get; set; }
         public decimal Amount { get; set; }

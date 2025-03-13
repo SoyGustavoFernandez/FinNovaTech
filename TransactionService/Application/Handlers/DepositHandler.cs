@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using System.Net;
 using TransactionService.Application.Command;
+using TransactionService.Application.DTOs;
 using TransactionService.Application.Interfaces;
 using TransactionService.Domain.Entities;
 using TransactionService.Domain.Enums;
 
 namespace TransactionService.Application.Handlers
 {
-    public class DepositHandler : IRequestHandler<DepositCommand, bool>
+    public class DepositHandler : IRequestHandler<DepositCommand, ResponseDTO<string>>
     {
         private readonly ITransactionEventStore _eventStore;
 
@@ -15,8 +17,12 @@ namespace TransactionService.Application.Handlers
             _eventStore = eventStore;
         }
 
-        public async Task<bool> Handle(DepositCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<string>> Handle(DepositCommand request, CancellationToken cancellationToken)
         {
+            if(request.Amount <= 0)
+            {
+                return new ResponseDTO<string>(false, "El monto debe ser mayor a cero", null, (int)HttpStatusCode.BadRequest);
+            }
             var transaction = new TransactionEventEntity
             {
                 AccountId = request.AccountId,
@@ -24,7 +30,7 @@ namespace TransactionService.Application.Handlers
                 Type = TransactionTypeEnum.Deposit.ToString()
             };
             await _eventStore.SaveAsync(transaction);
-            return true;
+            return new ResponseDTO<string>(true, "Depósito realizado con éxito", null, (int)HttpStatusCode.Created);
         }
     }
 }

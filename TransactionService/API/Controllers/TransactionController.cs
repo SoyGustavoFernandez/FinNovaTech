@@ -24,8 +24,8 @@ namespace TransactionService.API.Controllers
         [HttpGet("balance/{accountId}")]
         public async Task<IActionResult> GetBalance(int accountId)
         {
-            var balance = await _mediator.Send(new GetBalanceQuery(accountId));
-            return Ok(balance);
+            var response = await _mediator.Send(new GetBalanceQuery(accountId));
+            return StatusCode(response.StatusCode, response);
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace TransactionService.API.Controllers
         [HttpPost("deposit")]
         public async Task<IActionResult> Deposit([FromBody] DepositCommand command)
         {
-            var result = await _mediator.Send(command);
-            return result ? Ok("Depósito realizado") : BadRequest("Error al procesar el depósito");
+            var response = await _mediator.Send(command);
+            return StatusCode(response.StatusCode, response);
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace TransactionService.API.Controllers
         [HttpPost("withdraw")]
         public async Task<IActionResult> Withdraw([FromBody] WithdrawCommand command)
         {
-            var result = await _mediator.Send(command);
-            return result ? Ok("Retiro realizado") : BadRequest("Error al procesar el retiro");
+            var response = await _mediator.Send(command);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }
