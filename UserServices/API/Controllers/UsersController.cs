@@ -39,7 +39,7 @@ namespace UserService.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
-            var result = await _mediator.Send(new GetUserQueryById(id));
+            var result = await _mediator.Send(new GetUserByIdQuery(id));
             if (!result.Success)
             {
                 return NotFound(result);
@@ -55,7 +55,7 @@ namespace UserService.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RegisterUser([FromBody] CreateUserCommand command)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.Success)

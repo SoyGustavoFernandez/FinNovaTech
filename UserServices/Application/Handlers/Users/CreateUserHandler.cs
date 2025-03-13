@@ -12,12 +12,12 @@ namespace UserService.Application.Handlers.Users
     /// <summary>
     /// Handler para registrar un usuario.
     /// </summary>
-    public class RegisterUserHandler : IRequestHandler<CreateUserCommand, ResponseDTO<string>>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResponseDTO<string>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserValidation _userService;
 
-        public RegisterUserHandler(ApplicationDbContext context, IUserValidation userService)
+        public CreateUserHandler(ApplicationDbContext context, IUserValidation userService)
         {
             _context = context;
             _userService = userService;

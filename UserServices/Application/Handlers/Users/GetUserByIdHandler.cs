@@ -9,16 +9,16 @@ namespace UserService.Application.Handlers.Users
     /// <summary>
     /// Handler para obtener un usuario por su identificador.
     /// </summary>
-    public class GetUserHandler : IRequestHandler<GetUserQueryById, ResponseDTO<UserDTO>>
+    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ResponseDTO<UserDTO>>
     {
         private readonly ApplicationDbContext _context; 
 
-        public GetUserHandler(ApplicationDbContext context)
+        public GetUserByIdHandler(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<ResponseDTO<UserDTO>> Handle(GetUserQueryById request, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<UserDTO>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FindAsync(request.Id);
 

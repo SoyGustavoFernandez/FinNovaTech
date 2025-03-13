@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using UserService.Application.DTOs;
 
-namespace UserService.Application.Queries.Users
+namespace UserService.Application.Commands.Roles
 {
     /// <summary>
-    /// Query para obtener un usuario por su identificador.
+    /// Comando para eliminar un rol.
     /// </summary>
-    public class GetUserQueryById : IRequest<ResponseDTO<UserDTO>>
+    public class DeleteRoleCommand: IRequest<ResponseDTO<string>>
     {
         /// <summary>
-        /// Identificador del usuario.
+        /// Identificador del rol.
         /// </summary>
         public int Id { get; set; }
 
@@ -17,7 +17,7 @@ namespace UserService.Application.Queries.Users
         /// Constructor.
         /// </summary>
         /// <param name="id"></param>
-        public GetUserQueryById(int id)
+        public DeleteRoleCommand(int id)
         {
             Id = id;
         }

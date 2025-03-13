@@ -10,11 +10,11 @@ namespace UserService.Application.Handlers.Users
     /// <summary>
     /// Handler para obtener todos los usuarios.
     /// </summary>
-    public class GetAllUserHandler : IRequestHandler<GetAllUsersQuery, ResponseDTO<List<UserDTO>>>
+    public class GetUserAllHandler : IRequestHandler<GetAllUsersQuery, ResponseDTO<List<UserDTO>>>
     {
         private readonly ApplicationDbContext _context;
 
-        public GetAllUserHandler(ApplicationDbContext context)
+        public GetUserAllHandler(ApplicationDbContext context)
         {
             _context = context;
         }
