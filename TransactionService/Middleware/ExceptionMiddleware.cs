@@ -2,7 +2,7 @@
 using System.Text.Json;
 using TransactionService.Application.DTOs;
 
-namespace TransactionService.API.Middleware
+namespace TransactionService.Middleware
 {
     public class ExceptionMiddleware
     {

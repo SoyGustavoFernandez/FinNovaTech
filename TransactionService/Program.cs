@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using TransactionService.API.Middleware;
 using TransactionService.Application.Commands.Handlers;
 using TransactionService.Application.Interfaces;
 using TransactionService.Infrastructure.Data;
 using TransactionService.Infrastructure.Repositories;
+using TransactionService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
