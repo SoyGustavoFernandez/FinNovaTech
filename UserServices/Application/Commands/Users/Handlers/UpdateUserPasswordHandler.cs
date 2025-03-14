@@ -23,7 +23,7 @@ namespace UserService.Application.Commands.Users.Handlers
 
         public async Task<ResponseDTO<string>> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetUserByIdAsync(request.Id);
+            var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
                 return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
@@ -33,7 +33,7 @@ namespace UserService.Application.Commands.Users.Handlers
                 return new ResponseDTO<string>(false, "La contraseña no puede estar vacía", null, (int)HttpStatusCode.BadRequest);
             }
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            await _repository.UpdateUser(user);
+            await _repository.UpdateUserAsync(user);
 
             await _userLogRepository.AddLogAsync(new UserLogs
             {

@@ -7,9 +7,10 @@ namespace UserService.Application.Interfaces
     {
         Task<bool> EmailExistsAsync(string email);
         Task AddUserAsync(User user);
-        Task<User> GetUserByIdAsync(int id);
+        Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);
-        Task<List<UserDTO>> GetUsersAsync();
-        Task UpdateUser(User user);
+        Task<UserDTO> GetUserByIdAsync(int id);
+        Task<User> GetUserEntityByIdAsync(int id);
+        Task<List<UserDTO>> GetAllUsersAsync();
     }
 }

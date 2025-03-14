@@ -26,7 +26,7 @@ namespace UserService.Application.Commands.Users.Handlers
 
         public async Task<ResponseDTO<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetUserByIdAsync(request.Id);
+            var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
                 return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
@@ -44,7 +44,7 @@ namespace UserService.Application.Commands.Users.Handlers
             user.Name = request.Name;
             user.Email = request.Email;
             user.RoleId = request.Role;
-            await _repository.UpdateUser(user);
+            await _repository.UpdateUserAsync(user);
 
             await _userLogRepository.AddLogAsync(new UserLogs
             {

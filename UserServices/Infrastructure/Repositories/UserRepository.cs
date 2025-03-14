@@ -21,14 +21,10 @@ namespace UserService.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> EmailExistsAsync(string email)
+        public async Task UpdateUserAsync(User user)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
-        }
-
-        public async Task<User> GetUserByIdAsync(int id)
-        {
-            return await _context.Users.FindAsync(id);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(User user)
@@ -37,19 +33,33 @@ namespace UserService.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<UserDTO>> GetUsersAsync()
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<UserDTO> GetUserByIdAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            return new UserDTO
+            {
+                Name = user.Name,
+                Email = user.Email,
+            };
+        }
+
+        public async Task<User> GetUserEntityByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<List<UserDTO>> GetAllUsersAsync()
         {
             return await _context.Users.Select(u => new UserDTO
             {
                 Name = u.Name,
                 Email = u.Email,
             }).ToListAsync();
-        }
-
-        public async Task UpdateUser(User user)
-        {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
         }
     }
 }

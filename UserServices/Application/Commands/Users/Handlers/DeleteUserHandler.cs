@@ -23,7 +23,7 @@ namespace UserService.Application.Commands.Users.Handlers
 
         public async Task<ResponseDTO<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetUserByIdAsync(request.Id);
+            var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
                 return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
