@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Confluent.Kafka;
+using MediatR;
 using System.Net;
-using UserService.Application.Commands.Users;
+using System.Text.Json;
 using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
@@ -15,12 +16,14 @@ namespace UserService.Application.Commands.Users.Handlers
         private readonly IUserRepository _repository;
         private readonly IUserValidation _userService;
         private readonly IUserLogRepository _userLogRepository;
+        private readonly IProducer<Null, string> _kafkaProducer;
 
-        public CreateUserHandler(IUserRepository repository, IUserValidation userService, IUserLogRepository userRepository)
+        public CreateUserHandler(IUserRepository repository, IUserValidation userService, IUserLogRepository userRepository, IProducer<Null, string> kafkaProducer)
         {
             _repository = repository;
             _userService = userService;
             _userLogRepository = userRepository;
+            _kafkaProducer = kafkaProducer;
         }
 
         public async Task<ResponseDTO<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -45,6 +48,10 @@ namespace UserService.Application.Commands.Users.Handlers
             };
 
             await _repository.AddUserAsync(user);
+
+            var message = new Message<Null, string> { Value = JsonSerializer.Serialize(user) };
+
+            await _kafkaProducer.ProduceAsync("user-created", message);
 
             await _userLogRepository.AddLogAsync(new UserLogs
             {

@@ -1,9 +1,11 @@
+using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UserService.API.Middleware;
 using UserService.Application.Commands.Users.Handlers;
 using UserService.Application.Interfaces;
 using UserService.Infrastructure.Data;
+using UserService.Infrastructure.Messaging;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
 
@@ -17,6 +19,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly));
+
+builder.Services.AddSingleton<IHostedService, KafkaConsumerService>();
+
+var consumerConfig = new ConsumerConfig
+{
+    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"],
+    GroupId = "user-service-group",
+    AutoOffsetReset = AutoOffsetReset.Earliest
+};
+
+builder.Services.AddSingleton<IConsumer<Ignore, string>>(new ConsumerBuilder<Ignore, string>(consumerConfig).Build());
+
+var producerConfig = new ProducerConfig
+{
+    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"]
+};
+
+builder.Services.AddSingleton<IProducer<Null, string>>(new ProducerBuilder<Null, string>(producerConfig).Build());
 
 builder.Services.AddScoped<IUserValidation, UserValidationService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

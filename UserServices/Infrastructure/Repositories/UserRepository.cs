@@ -41,6 +41,10 @@ namespace UserService.Infrastructure.Repositories
         public async Task<UserDTO> GetUserByIdAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return null;
+            }
             return new UserDTO
             {
                 Name = user.Name,

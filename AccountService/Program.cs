@@ -1,7 +1,9 @@
 using AccountService.Application.Commands.Handlers;
 using AccountService.Application.Interfaces;
 using AccountService.Infrastructure.Data;
+using AccountService.Infrastructure.Messagging;
 using AccountService.Infrastructure.Repositories;
+using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -13,6 +15,22 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var producerConfig = new ProducerConfig
+{
+    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"]
+};
+
+builder.Services.AddSingleton<IProducer<Null, string>>(new ProducerBuilder<Null, string>(producerConfig).Build());
+
+var consumerConfig = new ConsumerConfig
+{
+    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"],
+    GroupId = "account-service-group",
+    AutoOffsetReset = AutoOffsetReset.Earliest
+};
+
+builder.Services.AddSingleton<IConsumer<Ignore, string>>(new ConsumerBuilder<Ignore, string>(consumerConfig).Build());
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountHandler).Assembly));
 
