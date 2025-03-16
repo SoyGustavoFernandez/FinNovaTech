@@ -4,6 +4,7 @@ using UserService.Application.Commands.Users;
 using UserService.Application.DTOs;
 using UserService.Application.Interfaces;
 using UserService.Domain.Entities;
+using UserService.Shared;
 
 namespace UserService.Application.Commands.Users.Handlers
 {
@@ -14,11 +15,13 @@ namespace UserService.Application.Commands.Users.Handlers
     {
         private readonly IUserRepository _repository;
         private readonly IUserLogRepository _userLogRepository;
+        private readonly Argon2Hasher _argon2Hasher;
 
-        public UpdateUserPasswordHandler(IUserRepository repository, IUserLogRepository userLogRepository)
+        public UpdateUserPasswordHandler(IUserRepository repository, IUserLogRepository userLogRepository, Argon2Hasher argon2Hasher)
         {
             _repository = repository;
             _userLogRepository = userLogRepository;
+            _argon2Hasher = argon2Hasher;
         }
 
         public async Task<ResponseDTO<string>> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
@@ -32,7 +35,8 @@ namespace UserService.Application.Commands.Users.Handlers
             {
                 return new ResponseDTO<string>(false, "La contraseña no puede estar vacía", null, (int)HttpStatusCode.BadRequest);
             }
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+            user.PasswordHash = _argon2Hasher.HashPassword(request.Password, Guid.NewGuid().ToString());
             await _repository.UpdateUserAsync(user);
 
             await _userLogRepository.AddLogAsync(new UserLogs

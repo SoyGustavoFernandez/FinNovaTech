@@ -1,7 +1,6 @@
 ﻿using Confluent.Kafka;
 using System.Text.Json;
 using UserService.Application.Interfaces;
-using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Messaging
 {

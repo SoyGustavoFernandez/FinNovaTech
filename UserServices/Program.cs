@@ -8,6 +8,7 @@ using UserService.Infrastructure.Data;
 using UserService.Infrastructure.Messaging;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
+using UserService.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly));
 
-builder.Services.AddSingleton<IHostedService, KafkaConsumerService>();
+var producerConfig = new ProducerConfig
+{
+    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"]
+};
+builder.Services.AddSingleton<IProducer<Null, string>>(sp =>
+{
+    return new ProducerBuilder<Null, string>(producerConfig).Build();
+});
+
+builder.Services.AddSingleton<KafkaProducerService>();
 
 var consumerConfig = new ConsumerConfig
 {
@@ -29,19 +39,18 @@ var consumerConfig = new ConsumerConfig
     AutoOffsetReset = AutoOffsetReset.Earliest
 };
 
-builder.Services.AddSingleton<IConsumer<Ignore, string>>(new ConsumerBuilder<Ignore, string>(consumerConfig).Build());
-
-var producerConfig = new ProducerConfig
+builder.Services.AddSingleton<IConsumer<Ignore, string>>(sp =>
 {
-    BootstrapServers = builder.Configuration["Kafka:BootstrapServers"]
-};
+    return new ConsumerBuilder<Ignore, string>(consumerConfig).Build();
+});
 
-builder.Services.AddSingleton<IProducer<Null, string>>(new ProducerBuilder<Null, string>(producerConfig).Build());
-
+builder.Services.AddHostedService<KafkaConsumerService>();
 builder.Services.AddScoped<IUserValidation, UserValidationService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserLogRepository, UserLogRepository>();
+
+builder.Services.AddSingleton<Argon2Hasher>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -50,7 +59,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "FinNovaTech API",
         Version = "v1",
-        Description = "API para gestionar usuarios y autenticación en FinNovaTech.",
+        Description = "API para gestionar usuarios en FinNovaTech.",
         Contact = new OpenApiContact
         {
             Name = "Gustavo Fernández",
