@@ -1,4 +1,28 @@
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=JeFe#7099
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9210:9200"
+      - "9310:9300"
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.2
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
   
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -23,3 +47,34 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+     - "6379:6379"
+    volumes:
+        - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=JeFe#0799
+    ports:
+      - "14333:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    user: root
+    restart: always
+
+volumes:
+  elastic_data:
+    driver: local
+  redis_data:
+    driver: local
+  sql_data:
+    driver: local
