@@ -43,7 +43,7 @@ namespace AccountService.Infrastructure.Repositories
             };
         }
 
-        public async Task<Account?> GetAccountEntityByIdAsync(int accountId)
+        public async Task<Account> GetAccountEntityByIdAsync(int accountId)
         {
             return await _context.Accounts.FindAsync(accountId);
         }

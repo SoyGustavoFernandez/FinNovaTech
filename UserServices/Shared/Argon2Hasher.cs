@@ -14,7 +14,7 @@ namespace UserService.Shared
         {
             var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
             {
-                Salt = Encoding.UTF8.GetBytes(salt),
+                Salt = Encoding.UTF8.GetBytes(salt ?? string.Empty),
                 DegreeOfParallelism = _parallelism,
                 MemorySize = _memorySize,
                 Iterations = _iterations
