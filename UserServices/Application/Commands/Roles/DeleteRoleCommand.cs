@@ -6,7 +6,7 @@ namespace UserService.Application.Commands.Roles
     /// <summary>
     /// Comando para eliminar un rol.
     /// </summary>
-    public class DeleteRoleCommand: IRequest<ResponseDTO<string>>
+    public class DeleteRoleCommand: IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Identificador del rol.

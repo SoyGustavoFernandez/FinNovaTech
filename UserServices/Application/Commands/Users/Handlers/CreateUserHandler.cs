@@ -13,7 +13,7 @@ namespace UserService.Application.Commands.Users.Handlers
     /// <summary>
     /// Handler para registrar un usuario.
     /// </summary>
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResponseDTO<string>>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResponseDto<string>>
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidation _userService;
@@ -32,17 +32,17 @@ namespace UserService.Application.Commands.Users.Handlers
             _argon2Hasher = argon2Hasher;
         }
 
-        public async Task<ResponseDTO<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             if (!await _userService.ValidateUserFormatEmailAsync(request.Email))
             {
-                return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
             }
 
             var emailExists = await _repository.EmailExistsAsync(request.Email);
             if (emailExists)
             {
-                return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
             }
 
             string salt = Guid.NewGuid().ToString();
@@ -71,7 +71,7 @@ namespace UserService.Application.Commands.Users.Handlers
             await _kafkaProducer.SendMessageAsync("user-created", userEventJson);
 
             await _kafkaConsumer.ProduceAsync("user-created", message);
-            return new ResponseDTO<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
+            return new ResponseDto<string>(true, "Usuario registrado exitosamente", null, (int)HttpStatusCode.Created);
         }
     }
 }

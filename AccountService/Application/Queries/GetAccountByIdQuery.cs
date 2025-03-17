@@ -4,7 +4,7 @@ using MediatR;
 
 namespace AccountService.Application.Queries
 {
-    public class GetAccountByIdQuery : IRequest<ResponseDTO<AccountDto>>
+    public class GetAccountByIdQuery : IRequest<ResponseDto<AccountDto>>
     {
         public int AccountId { get; set; }
 

@@ -10,7 +10,7 @@ namespace UserService.Application.Commands.Users.Handlers
     /// <summary>
     /// Handler para eliminar un usuario.
     /// </summary>
-    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, ResponseDTO<string>>
+    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, ResponseDto<string>>
     {
         private readonly IUserRepository _repository;
         private readonly IUserLogRepository _userLogRepository;
@@ -21,12 +21,12 @@ namespace UserService.Application.Commands.Users.Handlers
             _userLogRepository = userLogRepository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
-                return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             await _repository.DeleteUserAsync(user);
             await _userLogRepository.AddLogAsync(new UserLogs
@@ -34,7 +34,7 @@ namespace UserService.Application.Commands.Users.Handlers
                 UserId = user.Id,
                 Action = "Usuario eliminado",
             });
-            return new ResponseDTO<string>(true, "Usuario eliminado correctamente", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Usuario eliminado correctamente", null, (int)HttpStatusCode.OK);
         }
     }
 }

@@ -4,12 +4,12 @@ using MediatR;
 
 namespace AccountService.Application.Commands
 {
-    public class CreateAccountCommand : IRequest<ResponseDTO<int>>
+    public class CreateAccountCommand : IRequest<ResponseDto<int>>
     {
         public int UserId { get; set; }
-        public AccountTypeEnum AccountType { get; set; }
+        public AccountType AccountType { get; set; }
 
-        public CreateAccountCommand(int userId, AccountTypeEnum accountType)
+        public CreateAccountCommand(int userId, AccountType accountType)
         {
             UserId = userId;
             AccountType = accountType;

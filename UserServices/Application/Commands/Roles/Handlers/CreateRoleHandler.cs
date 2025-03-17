@@ -10,7 +10,7 @@ namespace UserService.Application.Commands.Roles.Handlers
     /// <summary>
     /// Handler para registrar un rol.
     /// </summary>
-    public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, ResponseDTO<string>>
+    public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, ResponseDto<string>>
     {
         private readonly IRoleRepository _repository;
 
@@ -19,14 +19,14 @@ namespace UserService.Application.Commands.Roles.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
         {
             rolEntity.Roles role = new()
             {
                 Name = request.Name
             };
             await _repository.AddRoleAsync(role);
-            return new ResponseDTO<string>(true, "Rol registrado exitosamente", null, (int)HttpStatusCode.Created);
+            return new ResponseDto<string>(true, "Rol registrado exitosamente", null, (int)HttpStatusCode.Created);
         }
     }
 }

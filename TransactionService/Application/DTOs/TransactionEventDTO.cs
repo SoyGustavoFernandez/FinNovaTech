@@ -2,15 +2,15 @@
 
 namespace TransactionService.Application.DTOs
 {
-    public class TransactionEventDTO
+    public class TransactionEventDto
     {
         public Guid Id { get; set; }
         public int AccountId { get; set; }
-        public TransactionTypeEnum Type { get; set; }
+        public TransactionType Type { get; set; }
         public decimal Amount { get; set; }
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        public DateTime Timestamp { get; set; }
 
-        public TransactionEventDTO(int accountId, TransactionTypeEnum type, decimal amount)
+        public TransactionEventDto(int accountId, TransactionType type, decimal amount)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;

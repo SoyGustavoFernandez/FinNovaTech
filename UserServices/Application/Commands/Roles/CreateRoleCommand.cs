@@ -6,7 +6,7 @@ namespace UserService.Application.Commands.Roles
     /// <summary>
     /// Comando para registrar un rol.
     /// </summary>
-    public class CreateRoleCommand : IRequest<ResponseDTO<string>>
+    public class CreateRoleCommand : IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Nombre del rol.

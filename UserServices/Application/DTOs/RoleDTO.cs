@@ -1,6 +1,6 @@
 ﻿namespace UserService.Application.DTOs
 {
-    public class RoleDTO
+    public class RoleDto
     {
         public string Name { get; set; }
     }

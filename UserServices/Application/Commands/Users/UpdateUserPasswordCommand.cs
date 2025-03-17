@@ -7,7 +7,7 @@ namespace UserService.Application.Commands.Users
     /// <summary>
     /// Comando para actualizar la contraseña de un usuario.
     /// </summary>
-    public class UpdateUserPasswordCommand: IRequest<ResponseDTO<string>>
+    public class UpdateUserPasswordCommand: IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Identificador del usuario.

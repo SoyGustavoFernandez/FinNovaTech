@@ -9,7 +9,7 @@ namespace UserService.Application.Queries.Users.Handlers
     /// <summary>
     /// Handler para obtener un usuario por su identificador.
     /// </summary>
-    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ResponseDTO<UserDTO>>
+    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ResponseDto<UserDto>>
     {
         private readonly IUserRepository _repository;
 
@@ -18,18 +18,18 @@ namespace UserService.Application.Queries.Users.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<UserDTO>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserByIdAsync(request.Id);
 
             if (user == null)
             {
-                return new ResponseDTO<UserDTO>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<UserDto>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
 
-            var userDTO = new UserDTO { Name = user.Name, Email = user.Email };
+            var UserDto = new UserDto { Name = user.Name, Email = user.Email };
 
-            return new ResponseDTO<UserDTO>(true, "Usuario encontrado", userDTO, (int)HttpStatusCode.OK);
+            return new ResponseDto<UserDto>(true, "Usuario encontrado", UserDto, (int)HttpStatusCode.OK);
         }
     }
 }

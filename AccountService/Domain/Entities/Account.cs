@@ -7,7 +7,7 @@ namespace AccountService.Domain.Entities
         public int Id { get; set; }
         public int UserId { get; set; } 
         public decimal Balance { get; set; }
-        public AccountTypeEnum AccountType { get; set; }
+        public AccountType AccountType { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

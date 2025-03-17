@@ -20,8 +20,6 @@ namespace AccountService.Infrastructure.Messagging
                 try
                 {
                     var consumeResult = _consumer.Consume(stoppingToken);
-
-                    var userExists = bool.Parse(consumeResult.Message.Value);
                 }
                 catch (ConsumeException e)
                 {

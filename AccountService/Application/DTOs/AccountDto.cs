@@ -6,6 +6,6 @@ namespace AccountService.Application.DTOs
     {
         public int UserId { get; set; }
         public decimal Balance { get; set; }
-        public AccountTypeEnum AccountType { get; set; }
+        public AccountType AccountType { get; set; }
     }
 }

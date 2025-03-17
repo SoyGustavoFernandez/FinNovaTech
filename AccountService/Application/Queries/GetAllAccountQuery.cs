@@ -6,7 +6,7 @@ namespace AccountService.Application.Queries
     /// <summary>
     /// Query para obtener todas las cuentas.
     /// </summary>
-    public class GetAllAccountQuery : IRequest<ResponseDTO<List<AccountDto>>>
+    public class GetAllAccountQuery : IRequest<ResponseDto<List<AccountDto>>>
     {
     }
 }

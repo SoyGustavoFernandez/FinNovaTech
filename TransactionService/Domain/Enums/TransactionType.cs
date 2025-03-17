@@ -1,6 +1,6 @@
 ﻿namespace TransactionService.Domain.Enums
 {
-    public enum TransactionTypeEnum
+    public enum TransactionType
     {
         Deposit,
         Withdraw,

@@ -9,7 +9,7 @@ namespace UserService.Application.Queries.Roles.Handlers
     /// <summary>
     /// Handler para obtener un rol por su Id.
     /// </summary>
-    public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, ResponseDTO<RoleDTO>>
+    public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, ResponseDto<RoleDto>>
     {
         private readonly IRoleRepository _repository;
 
@@ -18,15 +18,15 @@ namespace UserService.Application.Queries.Roles.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<RoleDTO>> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<RoleDto>> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
         {
             var role = await _repository.GetRoleByIdAsync(request.Id);
             if (role == null)
             {
-                return new ResponseDTO<RoleDTO>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<RoleDto>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
             }
-            var roleDTO = new RoleDTO { Name = role.Name };
-            return new ResponseDTO<RoleDTO>(true, "Rol encontrado", roleDTO, (int)HttpStatusCode.OK);
+            var RoleDto = new RoleDto { Name = role.Name };
+            return new ResponseDto<RoleDto>(true, "Rol encontrado", RoleDto, (int)HttpStatusCode.OK);
         }
     }
 }

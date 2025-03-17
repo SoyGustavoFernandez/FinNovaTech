@@ -11,7 +11,7 @@ namespace UserService.Application.Commands.Users.Handlers
     /// <summary>
     /// Handler para actualizar un usuario.
     /// </summary>
-    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, ResponseDTO<string>>
+    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, ResponseDto<string>>
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidation _userValidation;
@@ -24,22 +24,22 @@ namespace UserService.Application.Commands.Users.Handlers
             _userLogRepository = userLogRepository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
-                return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             bool validEmail = await _userValidation.ValidateUserFormatEmailAsync(request.Email);
             if (!validEmail)
             {
-                return new ResponseDTO<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "Formato de correo incorrecto", null, (int)HttpStatusCode.BadRequest);
             }
             var emailExists = await _repository.EmailExistsAsync(request.Email);
             if (emailExists)
             {
-                return new ResponseDTO<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "El email ya está registrado", null, (int)HttpStatusCode.BadRequest);
             }
             user.Name = request.Name;
             user.Email = request.Email;
@@ -51,7 +51,7 @@ namespace UserService.Application.Commands.Users.Handlers
                 UserId = user.Id,
                 Action = "Perfil actualizado"
             });
-            return new ResponseDTO<string>(true, "Usuario actualizado", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Usuario actualizado", null, (int)HttpStatusCode.OK);
         }
     }
 }

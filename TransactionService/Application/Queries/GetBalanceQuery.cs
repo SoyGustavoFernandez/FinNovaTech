@@ -3,7 +3,7 @@ using TransactionService.Application.DTOs;
 
 namespace TransactionService.Application.Queries
 {
-    public class GetBalanceQuery : IRequest<ResponseDTO<decimal>>
+    public class GetBalanceQuery : IRequest<ResponseDto<decimal>>
     {
         public int AccountId { get; set; }
 

@@ -47,8 +47,6 @@ builder.Services.AddSingleton<Argon2Hasher>();
 
 builder.Services.AddHostedService<KafkaConsumerService>();
 
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -71,11 +69,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-//app.UseMiddleware<ExceptionMiddleware>();
-
 // Configure the HTTP request pipeline.
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthService v1"));

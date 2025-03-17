@@ -6,7 +6,7 @@ namespace UserService.Application.Queries.Logs
     /// <summary>
     /// Query para obtener los logs de un usuario.
     /// </summary>
-    public class GetLogByUserIdQuery : IRequest<ResponseDTO<List<UserLogsDTO>>>
+    public class GetLogByUserIdQuery : IRequest<ResponseDto<List<UserLogsDto>>>
     {
         /// <summary>
         /// Id del usuario.

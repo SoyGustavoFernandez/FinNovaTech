@@ -1,6 +1,6 @@
 ﻿namespace UserService.Application.DTOs
 {
-    public class UserLogsDTO
+    public class UserLogsDto
     {
         public string Action { get; set; }
     }

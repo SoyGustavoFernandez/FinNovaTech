@@ -6,7 +6,7 @@ namespace UserService.Application.Queries.Users
     /// <summary>
     /// Query para obtener un usuario por su identificador.
     /// </summary>
-    public class GetUserByIdQuery : IRequest<ResponseDTO<UserDTO>>
+    public class GetUserByIdQuery : IRequest<ResponseDto<UserDto>>
     {
         /// <summary>
         /// Identificador del usuario.

@@ -31,7 +31,7 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
             var existingUser = await _loginRepository.GetUserByEmailAsync(request.Email);
             if (existingUser != null)
@@ -54,7 +54,7 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
             var user = await _loginRepository.GetUserByEmailAsync(request.Email);
             if (user == null || !_argon2Hasher.VerifyPassword(request.Password, user.Salt, user.PasswordHash))

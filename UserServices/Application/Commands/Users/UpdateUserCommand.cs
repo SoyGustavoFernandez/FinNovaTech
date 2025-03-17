@@ -6,7 +6,7 @@ namespace UserService.Application.Commands.Users
     /// <summary>
     /// Comando para actualizar un usuario.
     /// </summary>
-    public class UpdateUserCommand : IRequest<ResponseDTO<string>>
+    public class UpdateUserCommand : IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Identificador del usuario.

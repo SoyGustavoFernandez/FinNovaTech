@@ -6,7 +6,7 @@ namespace UserService.Application.Queries.Roles
     /// <summary>
     /// Query para obtener todos los roles.
     /// </summary>
-    public class GetAllRolesQuery : IRequest<ResponseDTO<List<RoleDTO>>>
+    public class GetAllRolesQuery : IRequest<ResponseDto<List<RoleDto>>>
     {
     }
 }

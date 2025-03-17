@@ -6,7 +6,7 @@ namespace UserService.Application.Commands.Roles
     /// <summary>
     /// Comando para actualizar un rol.
     /// </summary>
-    public class UpdateRoleCommand : IRequest<ResponseDTO<string>>
+    public class UpdateRoleCommand : IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Identificador del rol.

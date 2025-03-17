@@ -6,7 +6,7 @@ namespace UserService.Application.Commands.Users
     /// <summary>
     /// Comando para eliminar un usuario.
     /// </summary>
-    public class DeleteUserCommand : IRequest<ResponseDTO<string>>
+    public class DeleteUserCommand : IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Identificador del usuario.

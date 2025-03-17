@@ -38,14 +38,14 @@ namespace UserService.Infrastructure.Repositories
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
 
-        public async Task<UserDTO> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return null;
             }
-            return new UserDTO
+            return new UserDto
             {
                 Name = user.Name,
                 Email = user.Email,
@@ -57,9 +57,9 @@ namespace UserService.Infrastructure.Repositories
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<List<UserDTO>> GetAllUsersAsync()
+        public async Task<List<UserDto>> GetAllUsersAsync()
         {
-            return await _context.Users.Select(u => new UserDTO
+            return await _context.Users.Select(u => new UserDto
             {
                 Name = u.Name,
                 Email = u.Email,

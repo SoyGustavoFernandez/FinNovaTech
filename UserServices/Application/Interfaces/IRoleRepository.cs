@@ -8,7 +8,7 @@ namespace UserService.Application.Interfaces
         Task AddRoleAsync(Roles role);
         Task<Roles> GetRoleByIdAsync(int id);
         Task DeleteRoleAsync(Roles role);
-        Task<List<RoleDTO>> GetRolesAsync();
+        Task<List<RoleDto>> GetRolesAsync();
         Task UpdateRole(Roles role);
     }
 }

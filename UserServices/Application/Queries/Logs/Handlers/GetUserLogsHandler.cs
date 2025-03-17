@@ -6,7 +6,7 @@ using UserService.Application.Queries.Logs;
 
 namespace UserService.Application.Queries.Logs.Handlers
 {
-    public class GetUserLogsHandler : IRequestHandler<GetLogByUserIdQuery, ResponseDTO<List<UserLogsDTO>>>
+    public class GetUserLogsHandler : IRequestHandler<GetLogByUserIdQuery, ResponseDto<List<UserLogsDto>>>
     {
         private readonly IUserLogRepository _repository;
 
@@ -15,11 +15,11 @@ namespace UserService.Application.Queries.Logs.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<List<UserLogsDTO>>> Handle(GetLogByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<List<UserLogsDto>>> Handle(GetLogByUserIdQuery request, CancellationToken cancellationToken)
         {
             var logs = await _repository.GetLogsByUserIdAsync(request.UserId);
-            var logDTOs = logs.Select(log => new UserLogsDTO { Action = log.Action }).ToList();
-            return new ResponseDTO<List<UserLogsDTO>>(true, "Logs encontrados", logDTOs, (int)HttpStatusCode.OK);
+            var logDTOs = logs.Select(log => new UserLogsDto { Action = log.Action }).ToList();
+            return new ResponseDto<List<UserLogsDto>>(true, "Logs encontrados", logDTOs, (int)HttpStatusCode.OK);
         }
     }
 }

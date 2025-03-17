@@ -8,7 +8,7 @@ namespace UserService.Application.Queries.Users.Handlers
     /// <summary>
     /// Handler para obtener todos los usuarios.
     /// </summary>
-    public class GetAllUserHandler : IRequestHandler<GetAllUsersQuery, ResponseDTO<List<UserDTO>>>
+    public class GetAllUserHandler : IRequestHandler<GetAllUsersQuery, ResponseDto<List<UserDto>>>
     {
         private readonly IUserRepository _repository;
 
@@ -17,10 +17,10 @@ namespace UserService.Application.Queries.Users.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<List<UserDTO>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<List<UserDto>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await _repository.GetAllUsersAsync();
-            return new ResponseDTO<List<UserDTO>>(true, "Usuarios encontrados", users, (int)HttpStatusCode.OK);
+            return new ResponseDto<List<UserDto>>(true, "Usuarios encontrados", users, (int)HttpStatusCode.OK);
         }
     }
 }

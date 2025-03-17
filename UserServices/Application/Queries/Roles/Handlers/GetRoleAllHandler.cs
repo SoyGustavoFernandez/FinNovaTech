@@ -9,7 +9,7 @@ namespace UserService.Application.Queries.Roles.Handlers
     /// <summary>
     /// Handler para obtener todos los roles.
     /// </summary>
-    public class GetRoleAllHandler : IRequestHandler<GetAllRolesQuery, ResponseDTO<List<RoleDTO>>>
+    public class GetRoleAllHandler : IRequestHandler<GetAllRolesQuery, ResponseDto<List<RoleDto>>>
     {
         private readonly IRoleRepository _repository;
 
@@ -18,10 +18,10 @@ namespace UserService.Application.Queries.Roles.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<List<RoleDTO>>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<List<RoleDto>>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
         {
             var roles = await _repository.GetRolesAsync();
-            return new ResponseDTO<List<RoleDTO>>(true, "Roles encontrados", roles, (int)HttpStatusCode.OK);
+            return new ResponseDto<List<RoleDto>>(true, "Roles encontrados", roles, (int)HttpStatusCode.OK);
         }
     }
 }

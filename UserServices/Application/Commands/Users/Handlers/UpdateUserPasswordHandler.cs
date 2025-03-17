@@ -11,7 +11,7 @@ namespace UserService.Application.Commands.Users.Handlers
     /// <summary>
     /// Handler para actualizar la contraseña de un usuario.
     /// </summary>
-    public class UpdateUserPasswordHandler : IRequestHandler<UpdateUserPasswordCommand, ResponseDTO<string>>
+    public class UpdateUserPasswordHandler : IRequestHandler<UpdateUserPasswordCommand, ResponseDto<string>>
     {
         private readonly IUserRepository _repository;
         private readonly IUserLogRepository _userLogRepository;
@@ -24,16 +24,16 @@ namespace UserService.Application.Commands.Users.Handlers
             _argon2Hasher = argon2Hasher;
         }
 
-        public async Task<ResponseDTO<string>> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserEntityByIdAsync(request.Id);
             if (user == null)
             {
-                return new ResponseDTO<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "Usuario no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             if (string.IsNullOrEmpty(request.Password))
             {
-                return new ResponseDTO<string>(false, "La contraseña no puede estar vacía", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "La contraseña no puede estar vacía", null, (int)HttpStatusCode.BadRequest);
             }
 
             user.PasswordHash = _argon2Hasher.HashPassword(request.Password, Guid.NewGuid().ToString());
@@ -44,7 +44,7 @@ namespace UserService.Application.Commands.Users.Handlers
                 UserId = user.Id,
                 Action = "Usuario actualizó contraseña"
             });
-            return new ResponseDTO<string>(true, "Contraseña actualizada correctamente", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Contraseña actualizada correctamente", null, (int)HttpStatusCode.OK);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace UserService.Application.Queries.Roles
     /// <summary>
     /// Query para obtener un rol por su id
     /// </summary>
-    public class GetRoleByIdQuery : IRequest<ResponseDTO<RoleDTO>>
+    public class GetRoleByIdQuery : IRequest<ResponseDto<RoleDto>>
     {
         /// <summary>
         /// Identificador del rol

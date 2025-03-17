@@ -1,13 +1,13 @@
 ﻿namespace UserService.Application.DTOs
 {
-    public class ResponseDTO<T>
+    public class ResponseDto<T>
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public T Data { get; set; }
         public int StatusCode { get; set; }
 
-        public ResponseDTO(bool success, string message, T data, int statusCode)
+        public ResponseDto(bool success, string message, T data, int statusCode)
         {
             Success = success;
             Message = message;

@@ -1,6 +1,6 @@
 ﻿namespace AccountService.Domain.Enums
 {
-    public enum AccountTypeEnum
+    public enum AccountType
     {
         Savings,
         Checking

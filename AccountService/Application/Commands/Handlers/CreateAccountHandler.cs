@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace AccountService.Application.Commands.Handlers
 {
-    public class CreateAccountHandler : IRequestHandler<CreateAccountCommand, ResponseDTO<int>>
+    public class CreateAccountHandler : IRequestHandler<CreateAccountCommand, ResponseDto<int>>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IProducer<Null, string> _kafkaProducer;
@@ -21,7 +21,7 @@ namespace AccountService.Application.Commands.Handlers
             _kafkaConsumer = kafkaConsumer;
         }
 
-        public async Task<ResponseDTO<int>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<int>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             var requestMessage = new Message<Null, string> { Value = request.UserId.ToString() };
             await _kafkaProducer.ProduceAsync("user-validation-request", requestMessage);
@@ -33,7 +33,7 @@ namespace AccountService.Application.Commands.Handlers
 
             if (!userExists)
             {
-                return new ResponseDTO<int>(false, "El usuario no existe", 0, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<int>(false, "El usuario no existe", 0, (int)HttpStatusCode.BadRequest);
             }
 
             var account = new Account
@@ -44,7 +44,7 @@ namespace AccountService.Application.Commands.Handlers
 
             await _accountRepository.CreateAsync(account);
 
-            return new ResponseDTO<int>(true, "Cuenta creada correctamente", account.Id, (int)HttpStatusCode.Created);
+            return new ResponseDto<int>(true, "Cuenta creada correctamente", account.Id, (int)HttpStatusCode.Created);
         }
     }
 }

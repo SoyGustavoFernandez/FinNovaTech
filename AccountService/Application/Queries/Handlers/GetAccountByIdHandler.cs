@@ -6,7 +6,7 @@ using System.Net;
 
 namespace AccountService.Application.Queries.Handlers
 {
-    public class GetAccountByIdHandler : IRequestHandler<GetAccountByIdQuery, ResponseDTO<AccountDto>>
+    public class GetAccountByIdHandler : IRequestHandler<GetAccountByIdQuery, ResponseDto<AccountDto>>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -15,14 +15,14 @@ namespace AccountService.Application.Queries.Handlers
             _accountRepository = accountRepository;
         }
 
-        public async Task<ResponseDTO<AccountDto>> Handle(GetAccountByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<AccountDto>> Handle(GetAccountByIdQuery request, CancellationToken cancellationToken)
         {
             var account = await _accountRepository.GetAccountByIdAsync(request.AccountId);
             if (account == null)
             {
-                return new ResponseDTO<AccountDto>(false, "Cuenta no encontrada", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<AccountDto>(false, "Cuenta no encontrada", null, (int)HttpStatusCode.NotFound);
             }
-            return new ResponseDTO<AccountDto>(true, "Cuenta encontrada", account, (int)HttpStatusCode.OK);
+            return new ResponseDto<AccountDto>(true, "Cuenta encontrada", account, (int)HttpStatusCode.OK);
         }
     }
 }

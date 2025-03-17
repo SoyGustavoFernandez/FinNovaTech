@@ -7,7 +7,7 @@ using TransactionService.Domain.Enums;
 
 namespace TransactionService.Application.Queries.Handlers
 {
-    public class GetBalanceHandler : IRequestHandler<GetBalanceQuery, ResponseDTO<decimal>>
+    public class GetBalanceHandler : IRequestHandler<GetBalanceQuery, ResponseDto<decimal>>
     {
         private readonly ITransactionEventStore _eventStore;
 
@@ -16,16 +16,16 @@ namespace TransactionService.Application.Queries.Handlers
             _eventStore = eventStore;
         }
 
-        public async Task<ResponseDTO<decimal>> Handle(GetBalanceQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<decimal>> Handle(GetBalanceQuery request, CancellationToken cancellationToken)
         {
             var events = await _eventStore.GetEventsByAccountIdAsync(request.AccountId);
             if (events == null || !events.Any())
             {
-                return new ResponseDTO<decimal>(false, "No se encontraron eventos para la cuenta", 0, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<decimal>(false, "No se encontraron eventos para la cuenta", 0, (int)HttpStatusCode.NotFound);
             }
 
-            decimal balance = events.Sum(e => Enum.Parse<TransactionTypeEnum>(e.Type) == TransactionTypeEnum.Deposit ? e.Amount : -e.Amount);
-            return new ResponseDTO<decimal>(true, "Balance obtenido con éxito", balance, (int)HttpStatusCode.OK);
+            decimal balance = events.Sum(e => Enum.Parse<TransactionType>(e.Type) == TransactionType.Deposit ? e.Amount : -e.Amount);
+            return new ResponseDto<decimal>(true, "Balance obtenido con éxito", balance, (int)HttpStatusCode.OK);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace UserService.Application.Commands.Roles.Handlers
     /// <summary>
     /// Handler para eliminar un rol.
     /// </summary>
-    public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand, ResponseDTO<string>>
+    public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand, ResponseDto<string>>
     {
         private readonly IRoleRepository _repository;
 
@@ -18,15 +18,15 @@ namespace UserService.Application.Commands.Roles.Handlers
             _repository = repository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
             var role = await _repository.GetRoleByIdAsync(request.Id);
             if (role == null)
             {
-                return new ResponseDTO<string>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "Rol no encontrado", null, (int)HttpStatusCode.NotFound);
             }
             await _repository.DeleteRoleAsync(role);
-            return new ResponseDTO<string>(true, "Rol eliminado correctamente", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Rol eliminado correctamente", null, (int)HttpStatusCode.OK);
         }
     }
 }

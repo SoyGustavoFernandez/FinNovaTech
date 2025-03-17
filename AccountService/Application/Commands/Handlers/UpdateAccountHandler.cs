@@ -6,7 +6,7 @@ using System.Net;
 
 namespace AccountService.Application.Commands.Handlers
 {
-    public class UpdateAccountHandler :IRequestHandler<UpdateAccountCommand, ResponseDTO<string>>
+    public class UpdateAccountHandler :IRequestHandler<UpdateAccountCommand, ResponseDto<string>>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -15,17 +15,17 @@ namespace AccountService.Application.Commands.Handlers
             _accountRepository = accountRepository;
         }
 
-        public async Task<ResponseDTO<string>> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
         {
             var account = await _accountRepository.GetAccountEntityByIdAsync(request.Id);
             if (account == null)
             {
-                return new ResponseDTO<string>(false, "Cuenta no encontrada", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "Cuenta no encontrada", null, (int)HttpStatusCode.NotFound);
             }
 
             await _accountRepository.UpdateAccountAsync(account);
 
-            return new ResponseDTO<string>(true, "Cuenta actualizada", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Cuenta actualizada", null, (int)HttpStatusCode.OK);
         }
     }
 }

@@ -32,9 +32,9 @@ namespace UserService.Infrastructure.Repositories
             return await _context.Roles.FindAsync(id);
         }
 
-        public async Task<List<RoleDTO>> GetRolesAsync()
+        public async Task<List<RoleDto>> GetRolesAsync()
         {
-            return await _context.Roles.Select(r => new RoleDTO
+            return await _context.Roles.Select(r => new RoleDto
             {
                 Name = r.Name,
             }).ToListAsync();

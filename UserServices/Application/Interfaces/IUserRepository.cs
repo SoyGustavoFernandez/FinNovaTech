@@ -9,8 +9,8 @@ namespace UserService.Application.Interfaces
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);
-        Task<UserDTO> GetUserByIdAsync(int id);
+        Task<UserDto> GetUserByIdAsync(int id);
         Task<User> GetUserEntityByIdAsync(int id);
-        Task<List<UserDTO>> GetAllUsersAsync();
+        Task<List<UserDto>> GetAllUsersAsync();
     }
 }

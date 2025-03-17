@@ -7,7 +7,7 @@ namespace UserService.Application.Commands.Users
     /// <summary>
     /// Comando para registrar un usuario.
     /// </summary>
-    public class CreateUserCommand : IRequest<ResponseDTO<string>>
+    public class CreateUserCommand : IRequest<ResponseDto<string>>
     {
         /// <summary>
         /// Nombre del usuario.

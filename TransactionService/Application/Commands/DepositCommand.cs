@@ -3,7 +3,7 @@ using TransactionService.Application.DTOs;
 
 namespace TransactionService.Application.Command
 {
-    public class DepositCommand : IRequest<ResponseDTO<string>>
+    public class DepositCommand : IRequest<ResponseDto<string>>
     {
         public int AccountId { get; set; }
         public decimal Amount { get; set; }

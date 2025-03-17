@@ -5,7 +5,7 @@ namespace TransactionService.Application.Interfaces
 {
     public interface ITransactionRepository
     {
-        Task<List<TransactionEventDTO>> GetBalanceAsync(int idCuenta);
+        Task<List<TransactionEventDto>> GetBalanceAsync(int idCuenta);
         Task SaveTransactionAsync(TransactionEventEntity entity);
     }
 }

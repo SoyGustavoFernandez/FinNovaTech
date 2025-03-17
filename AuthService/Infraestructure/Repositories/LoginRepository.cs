@@ -17,7 +17,7 @@ namespace AuthService.Infraestructure.Repositories
         public async Task AddUserAsync(User user)
         {
             await _context.AuthUsers.AddAsync(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User> GetUserByEmailAsync(string email)

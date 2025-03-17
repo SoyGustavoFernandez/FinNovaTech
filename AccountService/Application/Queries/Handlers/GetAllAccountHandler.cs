@@ -8,7 +8,7 @@ namespace AccountService.Application.Queries.Handlers
     /// <summary>
     /// Handler para obtener todas las cuentas.
     /// </summary>
-    public class GetAllAccountHandler: IRequestHandler<GetAllAccountQuery, ResponseDTO<List<AccountDto>>>
+    public class GetAllAccountHandler: IRequestHandler<GetAllAccountQuery, ResponseDto<List<AccountDto>>>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -17,10 +17,10 @@ namespace AccountService.Application.Queries.Handlers
             _accountRepository = accountRepository;
         }
 
-        public async Task<ResponseDTO<List<AccountDto>>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<List<AccountDto>>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
         {
             var accounts = await _accountRepository.GetAllAccountAsync();
-            return new ResponseDTO<List<AccountDto>>(true, "Cuentas encontradas", accounts, (int)HttpStatusCode.OK);
+            return new ResponseDto<List<AccountDto>>(true, "Cuentas encontradas", accounts, (int)HttpStatusCode.OK);
         }
 
     }

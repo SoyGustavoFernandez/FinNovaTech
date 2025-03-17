@@ -7,7 +7,7 @@ using TransactionService.Domain.Enums;
 
 namespace TransactionService.Application.Commands.Handlers
 {
-    public class WithdrawHandler : IRequestHandler<WithdrawCommand, ResponseDTO<string>>
+    public class WithdrawHandler : IRequestHandler<WithdrawCommand, ResponseDto<string>>
     {
         private readonly ITransactionEventStore _eventStore;
 
@@ -16,26 +16,26 @@ namespace TransactionService.Application.Commands.Handlers
             _eventStore = eventStore;
         }
 
-        public async Task<ResponseDTO<string>> Handle(WithdrawCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseDto<string>> Handle(WithdrawCommand request, CancellationToken cancellationToken)
         {
             var events = await _eventStore.GetEventsByAccountIdAsync(request.AccountId);
             if (events == null)
             {
-                return new ResponseDTO<string>(false, "No se encontraron eventos para la cuenta", null, (int)HttpStatusCode.NotFound);
+                return new ResponseDto<string>(false, "No se encontraron eventos para la cuenta", null, (int)HttpStatusCode.NotFound);
             }
             if (request.Amount <= 0)
             {
-                return new ResponseDTO<string>(false, "El monto debe ser mayor a cero", null, (int)HttpStatusCode.BadRequest);
+                return new ResponseDto<string>(false, "El monto debe ser mayor a cero", null, (int)HttpStatusCode.BadRequest);
             }
             var transaction = new Domain.Entities.TransactionEventEntity
             {
                 AccountId = request.AccountId,
                 Amount = request.Amount,
-                Type = TransactionTypeEnum.Withdraw.ToString()
+                Type = TransactionType.Withdraw.ToString()
             };
 
             await _eventStore.SaveAsync(transaction);
-            return new ResponseDTO<string>(true, "Retiro realizado con éxito", null, (int)HttpStatusCode.OK);
+            return new ResponseDto<string>(true, "Retiro realizado con éxito", null, (int)HttpStatusCode.OK);
         }
     }
 }

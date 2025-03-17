@@ -22,10 +22,10 @@ namespace TransactionService.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<TransactionEventDTO>> GetBalanceAsync(int idCuenta)
+        public async Task<List<TransactionEventDto>> GetBalanceAsync(int idCuenta)
         {
             return await _context.TransactionEvents.Where(x => x.AccountId == idCuenta).OrderByDescending(x => x.Timestamp)
-                .Select(x => new TransactionEventDTO(x.AccountId, Enum.Parse<TransactionTypeEnum>(x.Type), x.Amount)).ToListAsync();
+                .Select(x => new TransactionEventDto(x.AccountId, Enum.Parse<TransactionType>(x.Type), x.Amount)).ToListAsync();
         }
     }
 }
