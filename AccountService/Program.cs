@@ -1,7 +1,6 @@
 using AccountService.Application.Commands.Handlers;
 using AccountService.Application.Interfaces;
 using AccountService.Infrastructure.Data;
-using AccountService.Infrastructure.Messagging;
 using AccountService.Infrastructure.Repositories;
 using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
