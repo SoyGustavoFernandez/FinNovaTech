@@ -5,11 +5,22 @@ namespace UserService.Infrastructure.Services
 {
     public class UserValidationService : IUserValidation
     {
-        public Task<bool> ValidateUserFormatEmailAsync(string email)
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(500);
+
+        private static readonly Regex EmailRegex = new(
+            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+            RegexOptions.Compiled,
+            RegexTimeout
+        );
+
+        public async Task<bool> ValidateUserFormatEmailAsync(string email)
         {
-            var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            var isValid = Regex.IsMatch(email, emailPattern);
-            return Task.FromResult(isValid);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+
+            return await Task.Run(() => EmailRegex.IsMatch(email));
         }
     }
 }

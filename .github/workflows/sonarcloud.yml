@@ -32,6 +32,6 @@ jobs:
 
       - name: Run SonarCloud Analysis
         run: |
-          dotnet sonarscanner begin /k:"880e1a74555d10610010144b05d88cd2636b96b2" /o:"soygustavofernandez" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner begin /k:"SoyGustavoFernandez_FinNovaTech" /o:"soygustavofernandez" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           dotnet build
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
